@@ -1,0 +1,50 @@
+%% Diagrama de despliegue de MERMEIN
+graph TB
+    subgraph Dev[Entorno de Desarrollo]
+        DevClient[Frontend (React/Vue)]
+        DevAPI[Backend API (Node.js/Django)]
+        DevDB[(Base de Datos Dev - PostgreSQL)]
+        DevClient --> DevAPI
+        DevAPI --> DevDB
+    end
+
+    subgraph QA[Entorno de Pruebas]
+        QAClient[Frontend QA]
+        QAAPI[Backend QA]
+        QADB[(Base de Datos QA)]
+        QAClient --> QAAPI
+        QAAPI --> QADB
+    end
+
+    subgraph Prod[Entorno de Producción]
+        WebClient[Frontend (HTML/CSS/JS)]
+        APIServer[Backend (API REST)]
+        DBServer[(PostgreSQL Productivo)]
+        FileStorage[(Almacenamiento de Reportes/PDF)]
+        WebClient --> APIServer
+        APIServer --> DBServer
+        APIServer --> FileStorage
+    end
+
+    subgraph CI/CD[Pipeline DevOps]
+        Git[Repositorio Git]
+        CI[Integración Continua (GitHub Actions/GitLab CI)]
+        CD[Despliegue (Docker/Kubernetes)]
+        Git --> CI
+        CI --> CD
+        CD --> Dev
+        CD --> QA
+        CD --> Prod
+    end
+
+    classDef dbStyle fill:#f0f4c3,stroke:#cddc39;
+    class DevDB,QADB,DBServer dbStyle;
+
+    classDef apiStyle fill:#e1f5fe,stroke:#03a9f4;
+    class DevAPI,QAAPI,APIServer apiStyle;
+
+    classDef frontStyle fill:#fff3e0,stroke:#ff9800;
+    class DevClient,QAClient,WebClient frontStyle;
+
+    classDef infraStyle fill:#ede7f6,stroke:#673ab7;
+    class Git,CI,CD,FileStorage infraStyle;
