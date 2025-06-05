@@ -1,0 +1,54 @@
+@startuml
+title Diagrama de Despliegue - MERMEIN
+
+' ===== ENTORNOS =====
+
+node "Cliente Web" {
+  artifact "MERMEIN Frontend\n(Vue/React)" as Frontend
+}
+
+node "Servidor de Desarrollo" {
+  component "Backend Dev\n(Node.js/Django)" as BackendDev
+  database "Base de Datos Dev\n(PostgreSQL)" as DBDev
+}
+
+node "Servidor de Pruebas (QA)" {
+  component "Backend QA\n(Node.js/Django)" as BackendQA
+  database "Base de Datos QA\n(PostgreSQL)" as DBQA
+}
+
+node "Servidor de Producción" {
+  component "Backend Prod\n(API REST - Node.js/Django)" as BackendProd
+  database "Base de Datos Prod\n(PostgreSQL)" as DBProd
+  artifact "Almacenamiento de Archivos\n(Reportes PDF, Excel)" as Storage
+}
+
+node "CI/CD Pipeline" {
+  component "Repositorio de Código\n(GitHub / GitLab)" as Repo
+  component "CI\n(Build, Test - GitHub Actions)" as CI
+  component "CD\n(Despliegue Docker/Kubernetes)" as CD
+}
+
+' ===== CONEXIONES =====
+
+' Desarrollo
+Frontend --> BackendDev : HTTP/REST
+BackendDev --> DBDev : PostgreSQL
+
+' QA
+Frontend --> BackendQA : HTTP/REST (QA)
+BackendQA --> DBQA : PostgreSQL
+
+' Producción
+Frontend --> BackendProd : HTTPS
+BackendProd --> DBProd : PostgreSQL
+BackendProd --> Storage : Guardado de reportes
+
+' CI/CD
+Repo --> CI : Push/Commit
+CI --> CD : Ejecuta tests y build
+CD --> BackendDev : Despliegue automático Dev
+CD --> BackendQA : Despliegue automático QA
+CD --> BackendProd : Despliegue manual o aprobado
+
+@enduml
