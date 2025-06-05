@@ -1,0 +1,34 @@
+flowchart TD
+    A[Inicio] --> B[Inicio de sesión]
+    B --> C{¿Credenciales válidas?}
+    C -- No --> D[Mostrar error]
+    C -- Sí --> E[Mostrar Dashboard según rol]
+    
+    E --> F{¿Usuario o Técnico?}
+    F -- Usuario --> G[Selecciona equipo o crea uno nuevo]
+    G --> H[Reporta falla con detalles]
+    H --> I[Validar formulario]
+    I --> J[Crear caso de falla]
+    J --> K[Asignar técnico disponible]
+    K --> L[Notificar al técnico]
+    
+    F -- Técnico --> M[Ver fallas asignadas]
+    M --> N[Selecciona caso]
+    N --> O[Registrar inicio de mantenimiento]
+    O --> P[Realiza reparación o diagnóstico]
+    P --> Q[Registrar acciones y repuestos]
+    Q --> R[Marcar falla como resuelta]
+    
+    R --> S[Actualizar estado del equipo]
+    S --> T[Agregar al historial]
+    T --> U{¿Incluye merma?}
+    U -- Sí --> V[Registrar merma]
+    U --> W[Cerrar caso]
+    
+    W --> X[Generar reporte]
+    X --> Y[Exportar PDF/Excel]
+    Y --> Z[Fin]
+
+    style A fill:#e0f7fa,stroke:#00796b
+    style Z fill:#e0f7fa,stroke:#00796b
+    style C,F,U fill:#fff9c4,stroke:#fbc02d
