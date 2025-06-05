@@ -1,0 +1,52 @@
+@startuml
+' Definición de nodos y artefactos
+
+node "Cliente Web" {
+  artifact "Frontend (React/Vue)" as FE
+}
+
+node "Servidor de Aplicación - Desarrollo" {
+  component "Backend Dev (API Node.js/Django)" as BEDev
+  database "DB Desarrollo (PostgreSQL)" as DBDev
+}
+
+node "Servidor de Aplicación - QA" {
+  component "Backend QA" as BEQA
+  database "DB QA (PostgreSQL)" as DBQA
+}
+
+node "Servidor de Producción" {
+  component "Backend Prod (API REST)" as BEProd
+  database "DB Producción (PostgreSQL)" as DBProd
+  artifact "Almacenamiento de reportes (PDF/Excel)" as FileStore
+}
+
+node "Pipeline CI/CD" {
+  component "GitHub/GitLab" as Git
+  component "CI (Build & Test)" as CI
+  component "CD (Docker/Kubernetes)" as CD
+}
+
+' Conexiones de desarrollo
+FE --> BEDev : Solicitudes HTTP
+BEDev --> DBDev : Conexión PostgreSQL
+
+' Conexiones QA
+FE --> BEQA : Solicitudes QA
+BEQA --> DBQA
+
+' Conexiones producción
+FE --> BEProd : HTTPS
+BEProd --> DBProd : Conexión segura
+BEProd --> FileStore : Guardado de archivos
+
+' CI/CD Flow
+Git --> CI : Push código
+CI --> CD : Pipeline ejecuta
+CD --> BEDev : Despliegue a desarrollo
+CD --> BEQA : Despliegue a QA
+CD --> BEProd : Despliegue a producción
+
+@enduml
+
+
