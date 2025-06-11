@@ -1,0 +1,28 @@
+@startuml
+actor Cliente
+participant "Frontend" as FE
+participant "Backend/Script" as BE
+database "Base de Datos" as DB
+participant "Técnico" as Tec
+
+' Notas generales (título e información)
+' Estas notas no se asocian directamente a un participante
+note over Cliente,BE
+  Diagrama de secuencia en PlantUML\nIng en Sistemas Computacionales\nCazares Ledesma Diego
+end note
+
+== Inicio de solicitud ==
+Cliente -> FE : Llenar y enviar formulario de reparación
+FE -> BE : Enviar solicitud del cliente
+
+BE -> BE : Validar datos
+
+alt Solicitud válida
+    BE -> DB : Guardar solicitud
+    DB --> BE : Confirmación de guardado
+    BE -> Tec : Enviar info del cliente y solicitud
+    BE -> FE : Confirmar al cliente que la solicitud fue enviada
+else Solicitud inválida
+    BE -> FE : Mostrar mensaje de error al cliente
+end
+@enduml
