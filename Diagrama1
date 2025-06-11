@@ -1,34 +1,57 @@
 flowchart TD
+    %% Textos informativos independientes
+    T1[Diagrama de flujo de inicio]
+    T2[Ing en Sistemas Computacionales]
+    T3[Cazares Ledesma Diego]
+
+    %% Flujo principal
     A[Inicio] --> B[Inicio de sesión]
     B --> C{¿Credenciales válidas?}
     C -- No --> D[Mostrar error]
     C -- Sí --> E[Mostrar Dashboard según rol]
-    
+
     E --> F{¿Usuario o Técnico?}
+
+    %% Usuario
     F -- Usuario --> G[Selecciona equipo o crea uno nuevo]
     G --> H[Reporta falla con detalles]
     H --> I[Validar formulario]
     I --> J[Crear caso de falla]
     J --> K[Asignar técnico disponible]
     K --> L[Notificar al técnico]
-    
+
+    %% Técnico
     F -- Técnico --> M[Ver fallas asignadas]
-    M --> N[Selecciona caso]
+    M --> N[Tomar caso]
     N --> O[Registrar inicio de mantenimiento]
-    O --> P[Realiza reparación o diagnóstico]
-    P --> Q[Registrar acciones y repuestos]
-    Q --> R[Marcar falla como resuelta]
-    
+    O --> AA{¿Se sabe la falla?}
+    AA --> AB[Enviar presupuesto al cliente]
+    AB --> AC{¿Realizar reparación?}
+
+    %% Si no se va a reparar
+    AC -- No --> AD[Registrar diagnóstico]
+    AD --> AE[Devolver equipo al cliente]
+    AE --> Z[Fin]
+
+    %% Si se va a reparar
+    AC -- Sí --> AF[Realizar reparaciones]
+    AF --> AG[Registrar acciones y repuestos]
+    AG --> R[Marcar falla como resuelta]
+
     R --> S[Actualizar estado del equipo]
     S --> T[Agregar al historial]
     T --> U{¿Incluye merma?}
     U -- Sí --> V[Registrar merma]
     U --> W[Cerrar caso]
-    
+
     W --> X[Generar reporte]
     X --> Y[Exportar PDF/Excel]
     Y --> Z[Fin]
 
+    %% Estilos
     style A fill:#e0f7fa,stroke:#00796b
     style Z fill:#e0f7fa,stroke:#00796b
-    style C,F,U fill:#fff9c4,stroke:#fbc02d
+    style C,F,U,AA,AC fill:#fff9c4,stroke:#fbc02d
+    style T1 fill:#f3e5f5,stroke:#6a1b9a
+    style T2 fill:#fce4ec,stroke:#c2185b
+    style T3 fill:#e8f5e9,stroke:#2e7d32
